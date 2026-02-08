@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neutron-wireguard-client"
+version = "0.1.0"
+description = "OpenStack WireGuard client library and CLI plugin"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "OpenStack Contributors"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Environment :: OpenStack",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "cliff>=4.0.0",
+    "osc-lib>=2.0.0",
+    "python-openstackclient>=6.0.0",
+    "openstacksdk>=1.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "python-openstackclient",
+]
+
+[project.entry-points."openstack.cli.extension"]
+wireguard = "neutron_wireguard_client.osc.plugin"
+
+[project.entry-points."openstack.wireguard.v2"]
+wireguard_create = "neutron_wireguard_client.osc.v2.wireguard:CreateWireguard"
+wireguard_delete = "neutron_wireguard_client.osc.v2.wireguard:DeleteWireguard"
+wireguard_list = "neutron_wireguard_client.osc.v2.wireguard:ListWireguard"
+wireguard_set = "neutron_wireguard_client.osc.v2.wireguard:SetWireguard"
+wireguard_show = "neutron_wireguard_client.osc.v2.wireguard:ShowWireguard"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["neutron_wireguard_client*"]

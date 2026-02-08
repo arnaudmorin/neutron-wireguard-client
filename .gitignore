@@ -1,0 +1,16 @@
+AUTHORS
+build/*
+ChangeLog
+
+# For testing purposes
+venv/
+.venv/
+
+# Python stuff
+*.pyc
+*.egg-info/
+
+# vim vim
+*.sw?
+!/.gitignore
+
