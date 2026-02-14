@@ -34,6 +34,15 @@ class ListColumn(cliff_columns.FormattableColumn):
             return ', '.join(str(v) for v in self._value)
         return str(self._value)
 
+
+class DictColumn(cliff_columns.FormattableColumn):
+    """Formats a dict as key=value pairs for display."""
+
+    def human_readable(self):
+        if not self._value:
+            return ''
+        return ', '.join(f'{k}={v}' for k, v in self._value.items())
+
 # Columns to display in list output
 LIST_COLUMNS = (
     'id',
@@ -58,16 +67,24 @@ SHOW_COLUMNS = (
     'peer_endpoint',
     'peer_allowed_ips',
     'status',
+    'agent_statuses',
 )
 
 
 def _get_columns(item):
     """Get column names and values for display."""
     columns = SHOW_COLUMNS
+    agent_statuses = getattr(item, 'agent_statuses', None)
+    if not agent_statuses:
+        # Do not display agent statuses if empty (this is an admin
+        # only field)
+        # Anyway, for regular users, the status is enough
+        columns = tuple(c for c in columns if c != 'agent_statuses')
     return (
         columns,
         utils.get_item_properties(item, columns, formatters={
             'peer_allowed_ips': ListColumn,
+            'agent_statuses': DictColumn,
         })
     )
 
